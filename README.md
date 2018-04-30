@@ -7,16 +7,17 @@
 Simple crypto-shop source. Based on public API`s: Blockchain, Ethplorer, XMRChain and CryptoID.
 
 # Features
-  - No need API key`s
-  - Clear PHP code
-  - Responsible design*)
-  - Convert price from UAH, USD, CHF, RUB, BLN, PLN, GBP to crypto
-	- Support DASH, XMR, ETH, BTC, LTC to payment
-	- Orders history
-	- Basic shop-security
+- No need API key`s
+- Clear PHP code
+- Responsible design*)
+- Convert price from UAH, USD, CHF, RUB, BLN, PLN, GBP to crypto
+- Support DASH, XMR, ETH, BTC, LTC to payment
+- Orders history
+- Basic shop-security
 > But only support text items
 
 ### Instruction
 1. Download
 2. Set `chmod 777 install.php`
-3. Run `install.php` and set you data
+3. Import .sql file
+4. Set run install.php
