@@ -1,21 +1,5 @@
 <?php
 	if(isset($_POST["install"])) {
-
-		// Create connection
-		$conn = new mysqli($_POST["host"],$_POST["user"],$_POST["pass"]);
-
-		// Check connection
-		if ($conn->connect_error) {
-			die("Connection failed: " . $conn->connect_error);
-		} 
-
-		$sqls0 = array("CREATE DATABASE SimpleCryptoShop", "CREATE TABLE `SimpleCryptoShop`.`Items` ( `id` INT(255) NOT NULL AUTO_INCREMENT , `img` TEXT NOT NULL , `name` VARCHAR(50) NOT NULL , `dscr` VARCHAR(100) NOT NULL, `content` TEXT NOT NULL , `price` INT NOT NULL, `fiat_type` VARCHAR(3) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB; CREATE TABLE `simplecryptoshop`.`orders` ( `id` INT NOT NULL AUTO_INCREMENT , `tx` VARCHAR(66) NOT NULL , `crypto` VARCHAR(3) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;");
-		
-		for ($i = 0; $i != 2; $i++)
-			$conn->query($sqls0[$i]);
-		
-		$conn->close();
-
 		$settings = fopen("include/settings.php", "w") or die("Unable to open file!");
 		$set = "<?php\n".'	$host = "'.$_POST["host"].'"'.";\n".'	$user = "'.$_POST["user"].'"'.";\n".'	$pass = "'.$_POST["pass"].'"'.";\n".'	$admin = "'.$_POST["adm"].'"'.";\n".'	$btc = "'.$_POST["btc"].'"'.";\n".'	$ltc = "'.$_POST["ltc"].'"'.";\n".'	$xmr = "'.$_POST["xmr"].'"'.";\n".'	$dash = "'.$_POST["dash"].'"'.";\n".'	$eth = "'.$_POST["eth"].'"'.";\n".'	$vwk = "'.$_POST["vwk"].'"'.";\n"."?>";
 		fwrite($settings, $set);
