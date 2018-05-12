@@ -1,84 +1,29 @@
 <?php
 
-	include("include/settings.php"); // Contains DB data and wallets
-	include("include/function.php"); // Functions
+	include("include/function.php"); 
 	
-	//First need check item ID and user payment method (eth, btc...)
-	if(isset($_POST["id"]) and isset($_POST["crypto"]) and $_POST["crypto"] == "ethereum" or $_POST["crypto"] == "bitcoin" or $_POST["crypto"] == "monero" or $_POST["crypto"] == "litecoin" or $_POST["crypto"] == "dash") {}
-	else { // If one parameter contains bad data
-		header("Location: /"); // Redirect to index.php
-		die();
-	}
+	buyCheck();
 	
-	//If all good
-	$produc_id = preg_replace("/[^0-9]/","",$_POST["id"]); // Delete all in ID without numbers
-	$buyed = false; // Default payment status
-	$c_name = "SCS"; // Default coin name)
-	
-	// He-he, you must know this step
-	switch($_POST["crypto"]) {
-		case "ethereum":
-			$c_name = "ETH";
-			break;
-			
-		case "bitcoin":
-			$c_name = "BTC";
-			break;
-			
-		case "litecoin":
-			$c_name = "LTC";
-			break;
-			
-		case "monero":
-			$c_name = "XMR";
-			break;
-			
-		case "dash":
-			$c_name = "DASH";
-			break;
-	}
-	
-	//Connect to DB
-	$conn = new mysqli($host, $user, $pass, "SimpleCryptoShop");
-	
-	// Check item available
-	$sql = "SELECT COUNT(*) FROM `Items` WHERE `id` =".$produc_id;
-	$result = $conn->query($sql);
-	$row = $result->fetch_assoc();
-	$count_int = $row['COUNT(*)'];
-	if ($count_int == 0) { // If item not found
-		header("Location: /"); // Go to index.php
-		die();
-	}
+	$buyed = false;
+	$c_name = retCN($_POST["crypto"]);
 
-	// But if item available
-	$sql = "SELECT `name`, `content`, `price`, `fiat_type` FROM `Items` WHERE `id` =".$produc_id;  // Get item info
-	$result = $conn->query($sql);
-	$row = $result->fetch_assoc();
+	$row = SQL_Query("full", "SELECT `name`, `content`, `price`, `fiat_type` FROM `Items` WHERE `id` =".$_POST["id"]);
+	$s_price = Conventer($row["price"],$c_name,$row["fiat_type"]); 
 	
-	$s_price = Conventer($row["price"],$_POST["crypto"],$row["fiat_type"]); // Convert item price from fiat to user payment method
-	
-	if(isset($_POST["payment"]) and isset($_POST["tx_id"]) and $_POST["payment"] == 1) { // Check TX send
-		if (strlen($_POST["tx_id"]) == 64 or strlen($_POST["tx_id"]) == 66) { // Validate TX length
-			$tx_id_clear = preg_replace("[^\w\d\s]","",$_POST["tx_id"]); // Clear TX
+	if(isset($_POST["payment"]) and isset($_POST["tx_id"]) and $_POST["payment"] == 1) { 
+		if (strlen($_POST["tx_id"]) == 64 or strlen($_POST["tx_id"]) == 66) { 
+			$tx_id_clear = preg_replace("[^\w\d\s]","",$_POST["tx_id"]); 
 			
-			// Checking DB with double tx
-			$check = "SELECT COUNT(*) FROM `orders` WHERE `tx` =".$tx_id_clear;
-			$rz_check = $conn->query($check);
-			$check_row = $rz_check->fetch_assoc();
-			$row_dat = $check_row['COUNT(*)'];
-			
-			if ($row_dat != 0) { // Found
+			if (SQL_Query("full","SELECT COUNT(*) FROM `orders` WHERE `tx` = '".$tx_id_clear."'")['COUNT(*)'] != 0) { 
 				header("Location: /");
 				die();
 			}
 			
-			$buyed = Find_Payment($tx_id_clear, $_POST["crypto"], $s_price); // Check payment status
+			$buyed = Find_Payment($tx_id_clear, $_POST["crypto"], $s_price); 
 		}
 	}
 	
 ?>
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -133,13 +78,8 @@
 			</center>
 		</div>
 		';
-					$sql = "DELETE FROM `items` WHERE `id` = ".$produc_id;
-					$conn->query($sql);
-					
-					$sql = "INSERT INTO `orders`(`tx`, `crypto`) VALUES ('".$tx_id_clear."', '".$c_name."')";
-					$conn->query($sql);
-					
-					$conn->close();
+					SQL_Query("nfull", "DELETE FROM `items` WHERE `id` = ".$_POST["id"]);
+					SQL_Query("nfull", "INSERT INTO `orders`(`tx`, `crypto`) VALUES ('".$tx_id_clear."', '".$c_name."')");
 				} else {
 			print '
 		<div>

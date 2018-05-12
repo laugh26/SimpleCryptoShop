@@ -76,13 +76,58 @@
 		return 1*$fiat/retPrice($crypto,$fiat_type);
 	}
 	
-	function SQL_Query($sql) {
-		
+	function SQL_Query($tp, $sql) {
 		include 'settings.php';
 		
-		$conn = new mysqli($host, $user, $pass, "SimpleCryptoShop");
-		$conn->query($sql);
-		$conn->close();
+		$conn = new mysqli($host, $user, $pass, "simplecryptoshop");
+		$result = $conn->query($sql);
+		if($tp == "full") {
+			$row = $result->fetch_assoc();
+			$conn->close();
+			
+			return $row;
+		} else {
+			$conn->close();
+			
+			return $result;
+		}
+	}
+	
+	function buyCheck() {
+		if(isset($_POST["id"]) and is_numeric($_POST["id"]) and isset($_POST["crypto"]) and $_POST["crypto"] == "ethereum" or $_POST["crypto"] == "bitcoin" or $_POST["crypto"] == "monero" or $_POST["crypto"] == "litecoin" or $_POST["crypto"] == "dash") {}
+		else {
+			header("Location: /");
+			die();
+		}
+		
+		if (SQL_Query("full", "SELECT COUNT(*) FROM `Items` WHERE `id` =".$_POST["id"])['COUNT(*)']  == 0) {
+			header("Location: /");
+			die();
+		}
+	}
+	
+	function retCN($name) {
+		switch($name) {
+		case "ethereum":
+			return "ETH";
+			break;
+			
+		case "bitcoin":
+			return "BTC";
+			break;
+			
+		case "litecoin":
+			return "LTC";
+			break;
+			
+		case "monero":
+			return "XMR";
+			break;
+			
+		case "dash":
+			return "DASH";
+			break;
+	}
 	}
 
 ?>

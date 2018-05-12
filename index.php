@@ -1,25 +1,17 @@
 <?php
 
-	include("include/settings.php");
+	include("include/function.php");
 	
 	$status = "";
 	
-	$conn = new mysqli($host, $user, $pass, "SimpleCryptoShop");
-
-	//Get items count
-	$sql = "SELECT COUNT(*) FROM `Items`";
-	$result = $conn->query($sql);
-	$row = $result->fetch_assoc();
-	$count_int = $row['COUNT(*)'];
-	if ($count_int < 1) {
-		$status = "No content"; // No items, count 0
+	if (SQL_Query("full", "SELECT COUNT(*) FROM `Items`")['COUNT(*)'] < 1) {
+		$status = "No content";
 	}
 	else {
-		$status = "Yep!"; // Have some items)
+		$status = "Yep!";
 	}
 
 ?>
-
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -39,18 +31,15 @@
 		<div class="content">
 			<?php
 				if ($status == "No content") {
-					echo $status; // If no items
+					echo $status;
 				}
 				else {
-					//Get all ID of product
-					$sql = "SELECT `id` FROM `Items`";
-					$result = $conn->query($sql);
+					$result = SQL_Query("nfull", "SELECT `id` FROM `Items`");
 					while($row2 = $result->fetch_assoc()) {
 						$a = $row2["id"];
-						$sql2 = "SELECT `img`, `name`, `dscr`, `price`, `fiat_type` FROM `Items` WHERE `id` ='$a'"; // Items info
-						$result2 = $conn->query($sql2);
-						$row = $result2->fetch_assoc();
-						//Create div with file info
+						
+						$row = SQL_Query("full", "SELECT `img`, `name`, `dscr`, `price`, `fiat_type` FROM `Items` WHERE `id` ='$a'");
+						
 						echo '<div class="product">';
 						echo "\n";
 						echo '				<img src="'.$row['img'].'" height="200" width="200">';
