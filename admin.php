@@ -88,7 +88,7 @@
 	}
 	
 	if(isset($_POST["new_item"])) {
-		SQL_Query("INSERT INTO `items`(`img`, `name`, `dscr`, `content`, `price`, `fiat_type`) VALUES ('".$_POST["icon"]."', '".$_POST["name"]."', '".$_POST["desc"]."', '".$_POST["cont"]."', '".$_POST["pric"]."', '".$_POST["fiat_type"]."')");
+		SQL_Query("nfull","INSERT INTO `items`(`img`, `name`, `dscr`, `content`, `price`, `fiat_type`) VALUES ('".$_POST["icon"]."', '".$_POST["name"]."', '".$_POST["desc"]."', '".$_POST["cont"]."', '".$_POST["pric"]."', '".$_POST["fiat_type"]."')");
 		$status = '<div class="alert">
   <span class="closebtn" onclick="this.parentElement.style.display='."none".';">&times;</span> 
   <strong>Succesfylly</strong> Item add to shop.
@@ -156,16 +156,9 @@
 		<?php
 			if ($tps == 1) {
 				echo $content_default;
-			} else {
-				include 'include/settings.php';
-			$conn = new mysqli($host, $user, $pass, "SimpleCryptoShop");
+			} 
 
-			//Get items count
-			$sql = "SELECT COUNT(*) FROM `orders`";
-			$result = $conn->query($sql);
-			$row = $result->fetch_assoc();
-			$count_int = $row['COUNT(*)'];
-			if ($count_int < 1) {
+			if (SQL_Query("full", "SELECT COUNT(*) FROM `orders`")['COUNT(*)'] < 1) {
 				$status = "No content"; // No items, count 0
 			}
 			else {
@@ -225,14 +218,10 @@
 						echo '<td colspan="3">No items</td>';
 					}
 					else {
-						//Get all ID of product
-						$sql = "SELECT `id` FROM `orders`";
-						$result = $conn->query($sql);
+						$result = SQL_Query("nfull", "SELECT `id` FROM `orders`");
 						while($row2 = $result->fetch_assoc()) {
 							$a = $row2["id"];
-							$sql2 = "SELECT `tx`, `crypto` FROM `orders` WHERE `id` ='$a'"; // Items info
-							$result2 = $conn->query($sql2);
-							$row = $result2->fetch_assoc();
+							$row = SQL_Query("full", "SELECT `tx`, `crypto` FROM `orders` WHERE `id` ='$a'");
 							echo "<tr><td>$a</td><td>".$row["tx"]."</td><td>".$row["crypto"]."</td></tr>";
 						}
 					}
