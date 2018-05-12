@@ -156,7 +156,7 @@
 		<?php
 			if ($tps == 1) {
 				echo $content_default;
-			} 
+			} else {
 
 			if (SQL_Query("full", "SELECT COUNT(*) FROM `orders`")['COUNT(*)'] < 1) {
 				$status = "No content"; // No items, count 0
