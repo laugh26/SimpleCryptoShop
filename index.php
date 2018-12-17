@@ -1,74 +1,152 @@
 <?php
 
-	include("include/function.php");
-	
-	$status = "";
-	
-	if (SQL_Query("full", "SELECT COUNT(*) FROM `Items`")['COUNT(*)'] < 1) {
-		$status = "No content";
-	}
-	else {
-		$status = "Yep!";
-	}
+	include("include/db.php");
 
+    $category = FALSE;
+    $shop_info = DataBase("SELECT * FROM `settings`");
+	
+	if (DataBase("SELECT COUNT(*) FROM `items`")[0] > 0) {
+	    $status = TRUE;
+	} else {
+	    $status = FALSE;
+    }
+    
+    if (isset($_GET['category']) && is_numeric($_GET['category'])) {
+        if (DataBase("SELECT COUNT(*) FROM `category` WHERE `id` = ".$_GET['category'])[0] != 1) {
+            header('Location: /');
+        } else {
+            $category = TRUE;
+        }
+    }
 ?>
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<link rel="stylesheet" type="text/css" href="css/my.css">
-		<title>SCS - Simple Crypto Shop</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="<?php echo $shop_info['shop_desc']; ?>">
+		<meta name="keywords" content="<?php echo $shop_info['shop_keys']; ?>">
+		<title>Items - <?php echo $shop_info['shop_name']; ?></title>
+		<!-- Bootstrap core CSS -->
+		<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Custom styles for this template -->
+		<link href="css/shop-homepage.css" rel="stylesheet">
 	</head>
 	<body>
-		<div class="Menu"><br>
-			<span class="First1">
-				<span style="font-size:50px;" class="menu">Wellcome, to </span>
-				<span style="font-size:50px;">SBS</span>
-			</span>
-			<br>
-			<span style="font-size:25px;" class="menu">Buy all items for Ethereum, Monero, DASH, Litecoin or Bitcoin.</span>
+		<!-- Navigation -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+			<div class="container">
+				<a class="navbar-brand" href="/"><?php echo $shop_info['shop_name']; ?></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarResponsive">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="about">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="contact">Contact</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<!-- Page Content -->
+		<div class="container">
+			<div class="row">
+                <?php
+                    if (!($category)) {
+                        echo '<div class="col-lg-3">
+                        <br>
+                        <br>
+                        <div class="list-group">';
+
+                        $rezults = DataBase('SELECT * FROM `category`', TRUE, TRUE);
+
+                        foreach ($rezults as $rezult) {
+                            $count = DataBase('SELECT COUNT(`id`) FROM `items` WHERE `category` = '.$rezult['id'])[0];
+
+                            echo '<a href="?category='.$rezult['id'] .
+                                 '" class="list-group-item">'.$rezult['name'] .
+                                 " ($count)</a>";
+                        }
+
+                        echo '</div>
+                        </div>';
+                    }
+                ?>
+				<!-- /.col-lg-3 -->
+				<div class="col-lg-9">
+					<div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+						<ol class="carousel-indicators">
+							<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+							<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+							<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+						</ol>
+						<div class="carousel-inner" role="listbox">
+							<div class="carousel-item active">
+								<img class="d-block img-fluid" src="<?php echo $shop_info['first_screen']; ?>" alt="First slide">
+							</div>
+							<div class="carousel-item">
+								<img class="d-block img-fluid" src="<?php echo $shop_info['second_screen']; ?>" alt="Second slide">
+							</div>
+							<div class="carousel-item">
+								<img class="d-block img-fluid" src="<?php echo $shop_info['third_screen']; ?>" alt="Third slide">
+							</div>
+						</div>
+						<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+						</a>
+						<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+						</a>
+					</div>
+					<div class="row">
+						<?php
+							if ($status) {
+                                if ($category) {
+                                    $rezults = DataBase(
+                                        'SELECT * FROM `items` WHERE `category` = '.$_GET['category'],
+                                        TRUE,
+                                        TRUE
+                                    );
+                                } else {
+                                    $rezults = DataBase('SELECT * FROM `items`', TRUE, TRUE);
+                                }
+
+                                foreach ($rezults as $rezult) {
+                                    $t_link = '/item.php?id='.$rezult['id'];
+                                    echo '<div class="col-lg-4 col-md-6 mb-4">'."\n";
+                                    echo '<div class="card h-100">'."\n";
+                                    echo '<a href="'.$t_link.'"><img class="card-img-top" src="'.$rezult['img'].'" alt=""></a>'."\n";
+                                    echo '<div class="card-body">'."\n";
+                                    echo '<h4 class="card-title">'."\n";
+                                    echo '<a href="'.$t_link.'">'.$rezult['name'].'</a>'."\n";
+                                    echo '</h4>'."\n";
+                                    echo '<h5>'.$rezult["fiat_price"]." ".$rezult["fiat_type"]."</h5>\n";
+                                    echo '<p class="card-text">'.$rezult['short_desc']."</p>\n";
+                                    echo "</div>\n";
+                                    echo "</div>\n";
+                                    echo "</div>\n";
+                                }
+							} else {
+							    echo "No item`s in shop...";
+							}
+						?>
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.col-lg-9 -->
+			</div>
+			<!-- /.row -->
 		</div>
-		<div class="content">
-			<?php
-				if ($status == "No content") {
-					echo $status;
-				}
-				else {
-					$result = SQL_Query("nfull", "SELECT `id` FROM `Items`");
-					while($row2 = $result->fetch_assoc()) {
-						$a = $row2["id"];
-						
-						$row = SQL_Query("full", "SELECT `img`, `name`, `dscr`, `price`, `fiat_type` FROM `Items` WHERE `id` ='$a'");
-						
-						echo '<div class="product">';
-						echo "\n";
-						echo '				<img src="'.$row['img'].'" height="200" width="200">';
-						echo "\n";
-						echo '				<h3>'.$row['name'].'</h3>';
-						echo "\n";
-						echo '				<p>'.$row['dscr'].'</p>';
-						echo "\n";
-						echo '				<div class="payment_methods">';
-						echo "\n";
-						echo '					<form action="buy.php" method="post">'."\n						".'<input type="hidden" name="id" value="'.$a.'">'."\n						".'<input type="hidden" name="crypto" value="ethereum">'."\n						".'<button type="submit"><img src="img/eth.png" title="Buy with Ethereum" alt="ETH"></button>'."\n					".'</form>';
-						echo "\n";
-						echo '					<form action="buy.php" method="post">'."\n						".'<input type="hidden" name="id" value="'.$a.'">'."\n						".'<input type="hidden" name="crypto" value="monero">'."\n						".'<button type="submit"><img src="img/xmr.png" title="Buy with Monero" alt="XMR"></button>'."\n					".'</form>';
-						echo "\n";
-						echo '					<form action="buy.php" method="post">'."\n						".'<input type="hidden" name="id" value="'.$a.'">'."\n						".'<input type="hidden" name="crypto" value="bitcoin">'."\n						".'<button type="submit"><img src="img/btc.png" title="Buy with Bitcoin" alt="BTC"></button>'."\n					".'</form>';
-						echo "\n";
-						echo '					<form action="buy.php" method="post">'."\n						".'<input type="hidden" name="id" value="'.$a.'">'."\n						".'<input type="hidden" name="crypto" value="litecoin">'."\n						".'<button type="submit"><img src="img/ltc.png" title="Buy with Litecoin" alt="LTC"></button>'."\n					".'</form>';
-						echo "\n";
-						echo '					<form action="buy.php" method="post">'."\n						".'<input type="hidden" name="id" value="'.$a.'">'."\n						".'<input type="hidden" name="crypto" value="dash">'."\n						".'<button type="submit"><img src="img/dash.png" title="Buy with DASH" alt="DASH"></button>'."\n					".'</form>';
-						echo "\n";
-						echo '				</div>';
-						echo "\n";
-						echo '				<b>Price</b>: '.$row["price"]." ".$row["fiat_type"];
-						echo '			</div>';
-						echo "\n";
-						echo "\n";
-					}
-				}
-			?>
-		</div>
+		<!-- /.container -->
+
+		<!-- Bootstrap core JavaScript -->
+		<script src="vendor/jquery/jquery.min.js"></script>
+		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	</body>
 </html>
