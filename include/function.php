@@ -49,23 +49,29 @@
 		}
 	}
 
-	function cryptoID($name) {
+	function cryptoID($names) {
+		$ids = [];
 		$massive = implode('', file("https://api.coinmarketcap.com/v2/listings/"));
 		$massive = json_decode($massive, true);
 		
-		for($i =0; $i != count($massive['data']); $i++)
-			if($massive['data'][$i]['symbol'] == "$name")
-				return $massive['data'][$i]['id'];
-		
-		return;
+		for ($i=0; $i != count($massive['data']); $i++)
+			if (in_array($massive['data'][$i]['symbol'], $names))
+				array_push($ids, $massive['data'][$i]['id']);
+
+		return $ids;
 	}
 
-	function retPrice($crypto, $fiat) {
-		$c_id = cryptoID($crypto);
-		$massive = implode('', file("https://api.coinmarketcap.com/v2/ticker/$c_id/?convert=$fiat"));
-		$massive = json_decode($massive, true);
-		
-		return $massive['data']['quotes']["$fiat"]['price'] - $massive['data']['quotes']["$fiat"]['price']*5/100;	
+	function retPrice($cryptos, $fiat) {
+		$ids = cryptoID($cryptos);
+		$prices = [];
+
+		foreach ($ids as $id) {
+			$massive = implode('', file("https://api.coinmarketcap.com/v2/ticker/$id/?convert=$fiat"));
+			$massive = json_decode($massive, true)['data']['quotes']["$fiat"]['price'];
+			array_push($prices, round($massive-$massive*5/100, 2));
+		}
+
+		return $prices;
 	}
 	
 	function Conventer($fiat, $crypto, $fiat_type) {
