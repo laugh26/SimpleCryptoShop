@@ -1,120 +1,153 @@
 <?php
-    include 'inc/on.php';
+	include 'inc/on.php';
 
-    if (isset($_POST['new_item'])) {
-        $name = htmlspecialchars($_POST['name']);
-        $sdesc = htmlspecialchars($_POST['sdesc']);
-        $fdesc = htmlspecialchars($_POST['fdesc']);
-        $price = $_POST['price'];
-        $fiat = $_POST['fiat_type'];
-        $img = $_POST['icon'];
-        $content = $_POST['cont'];
-        $category = $_POST['category'];
-
-        $vars = [
-            'name', 'img', 'short_desc', 'full_desc',
-            'fiat_price', 'fiat_type', 'content', 'category'
-        ];
-
-        $values = [
-            $name, $img, $sdesc, $fdesc,
-            $price, $fiat, $content, $category
-        ];
-
-        InsertDB('items', $vars, $values);
-    }
+	$shop_info = DataBase("SELECT * FROM `settings`");
+	$temp = DataBase("SELECT COUNT(*) FROM `temp`")[0];
+	$sales = DataBase("SELECT COUNT(*) FROM `payments`")[0];
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Add Item</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" media="screen" href="../css/my.css" />
-        <script src="main.js"></script>
-    </head>
-    <body class="adm_body">
-        <div class="adm_menu">
-            <div class="adm_logo">
-                <span>SCS</span>
-            </div>
-            
-            <a href="#"><button class="menu_list selected">Add Item</button></a>
-            
-            <form method="post">
-                <input type="hidden" name="page" value="show">
-                <button class="menu_list">
-                    Orders
-                </button>
-            </form>
-            
-        </div>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/fontawesome-all.min.css">
+		<link rel="stylesheet" href="css/datatables.min.css">
+		<link rel="stylesheet" href="css/bootadmin.min.css">
+		<title>Dashboard | <?php echo $shop_info['shop_name']; ?></title>
+	</head>
+	<body class="bg-light">
+		<nav class="navbar navbar-expand navbar-dark bg-primary">
+			<a class="sidebar-toggle mr-3" href="#"><i class="fa fa-bars"></i></a>
+			<a class="navbar-brand" href="/"><?php echo $shop_info['shop_name']; ?></a>
+			<div class="navbar-collapse collapse">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item dropdown">
+						<a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Admin</a>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd_user">
+							<a href="logout.php" class="dropdown-item">Logout</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div class="d-flex">
+			<div class="sidebar sidebar-dark bg-dark">
+				<ul class="list-unstyled">
+					<li class="active"><a href="/"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
+					<li><a href="add.php"><i class="fa fa-fw fa-edit"></i> Add item</a></li>
+					<li><a href="orders.php"><i class="fa fa-fw fa-table"></i> Orders</a></li>
+					<li><a href="settings.php"><i class="fa fa-fw fa-cog"></i> Settings</a></li>
+				</ul>
+			</div>
+			<div class="content p-4">
+				<div class="text-center mb-4">
+					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+					<!-- Responsive -->
+					<ins class="adsbygoogle"
+						style="display:block"
+						data-ad-client="ca-pub-4097235499795154"
+						data-ad-slot="5211442851"
+						data-ad-format="auto"></ins>
+					<script>
+						(adsbygoogle = window.adsbygoogle || []).push({});
+					</script>
+				</div>
+				<h2 class="mb-4">Dashboard</h2>
+				<div class="row mb-4">
+					<div class="col-md">
+						<div class="d-flex border">
+							<div class="bg-primary text-light p-4">
+								<div class="d-flex align-items-center h-100">
+									<i class="fa fa-3x fa-fw fa-spinner fa-spin"></i>
+								</div>
+							</div>
+							<div class="flex-grow-1 bg-white p-4">
+								<p class="text-uppercase text-secondary mb-0">Temp</p>
+								<h3 class="font-weight-bold mb-0"><?php echo $temp; ?></h3>
+							</div>
+						</div>
+					</div>
+					<div class="col-md">
+						<div class="d-flex border">
+							<div class="bg-danger text-light p-4">
+								<div class="d-flex align-items-center h-100">
+									<i class="fa fa-3x fa-fw fa-shopping-cart"></i>
+								</div>
+							</div>
+							<div class="flex-grow-1 bg-white p-4">
+								<p class="text-uppercase text-secondary mb-0">Sales</p>
+								<h3 class="font-weight-bold mb-0"><?php echo $sales; ?></h3>
+							</div>
+						</div>
+					</div>
+					<div class="col-md">
+						<div class="d-flex border">
+							<div class="bg-info text-light p-4">
+								<div class="d-flex align-items-center h-100">
+									<i class="fa fa-3x fa-fw fa-users"></i>
+								</div>
+							</div>
+							<div class="flex-grow-1 bg-white p-4">
+								<p class="text-uppercase text-secondary mb-0">???</p>
+								<h3 class="font-weight-bold mb-0">???</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header bg-white font-weight-bold">
+						Recent Orders
+					</div>
+					<div class="card-body">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">Order ID</th>
+									<th scope="col">Item</th>
+									<th scope="col">TXID</th>
+									<th scope="col">Fiat</th>
+									<th scope="col">Crypto</th>
+									<th scope="col">System</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
 
-        <div class="adm_content">
-            <center>
-                <h3>Add new item to shop</h3>
-            </center>
-
-            <form method="post">
-                <label for="iname">Item Name</label>
-                <input type="text" id="iname" name="name" placeholder="Paste item name" required>
-                <br>
-                <br>
-                <label for="icat">Item Category</label>
-                <select name="category" >
-                    <option value="" disabled selected>Select category</option>
-                    <?php
-
-                        $rezults = DataBase('SELECT * FROM `category`', TRUE, TRUE);
-
-                        foreach ($rezults as $rezult) {
-                            echo '<option value="'.$rezult['id'].'">'.$rezult['name'].'</option>';
-                        }
-
-                    ?>
-                </select>
-                <br>
-                <br>
-                <label for="idesc">Item Short Description</label>
-                <input type="text" id="idesc" name="sdesc" placeholder="Paste short item description. Min len 35, max 50" required>
-                <br>
-                <br>
-                <label for="idesc">Item Full Description</label>
-                <br>
-                <input type="text" id="idesc" name="fdesc" placeholder="Paste full item description." required>
-                <br>
-                <br>
-                <label for="iicon">Item Image</label>
-                <input type="text" id="iicon" name="icon" placeholder="Link to image here. Ex http://example.com/item.png" required>
-                <br>
-                <br>
-                <label for="icont">Item Data</label>
-                <input type="text" id="icont" name="cont" placeholder="Item data here" required>
-                <br>
-                <br>
-                <label for="ipric">Item Price</label>
-                <div class="adm_content2">
-                    <input type="text" id="ipric" name="price" placeholder="Fiat price" required>
-                    <select name="fiat_type" >
-                        <option value="" disabled selected>Select fiat</option>
-                        <option value="UAH">UAH</option>
-                        <option value="USD">USD</option>
-                        <option value="GBP">GBP</option>
-                        <option value="RUB">RUB</option>
-                        <option value="EUR">EUR</option>
-                        <option value="CZK">CZK</option>
-                        <option value="BLN">BLN</option>
-                        <option value="PLN">PLN</option>
-                        <option value="CHF">CHF</option>
-                        <option value="AED">AED</option>
-                    </select>
-                </div>
-                <br>
-                <br>
-                <input type="hidden" name="new_item" value="1">
-                <input type="submit" value="Submit" class="add_item">
-            </form>
-        </div>
-    </body>
+									if ($sales > 0) {
+										$payments = DataBase(
+											'SELECT * FROM `payments` ORDER BY `date` DESC LIMIT 10',
+											TRUE,
+											TRUE
+										);
+	
+										foreach($payments as $payment) {
+											echo "<tr>
+										<td>".$payment['id']."</td>
+										<td>".$payment['product']."</td>
+										<td>".$payment['txid']."</td>
+										<td>".$payment['fiat']."</td>
+										<td>".$payment['crypto']."</td>
+										<td>".$payment['system']."</td>
+									</tr>\n";
+										}
+									} else {
+										echo '<tr>
+									<td colspan="6">No sales</td>
+								</tr>'."\n";
+									}
+									
+								?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.bundle.min.js"></script>
+		<script src="js/datatables.min.js"></script>
+		<script src="js/moment.min.js"></script>
+		<script src="js/bootadmin.min.js"></script>
+	</body>
 </html>
