@@ -119,18 +119,18 @@
 
                                 foreach ($rezults as $rezult) {
                                     $t_link = '/item.php?id='.$rezult['id'];
-                                    echo '<div class="col-lg-4 col-md-6 mb-4">'."\n";
-                                    echo '<div class="card h-100">'."\n";
-                                    echo '<a href="'.$t_link.'"><img class="card-img-top" src="'.$rezult['img'].'" alt=""></a>'."\n";
-                                    echo '<div class="card-body">'."\n";
-                                    echo '<h4 class="card-title">'."\n";
-                                    echo '<a href="'.$t_link.'">'.$rezult['name'].'</a>'."\n";
-                                    echo '</h4>'."\n";
-                                    echo '<h5>'.$rezult["fiat_price"]." ".$rezult["fiat_type"]."</h5>\n";
-                                    echo '<p class="card-text">'.$rezult['short_desc']."</p>\n";
-                                    echo "</div>\n";
-                                    echo "</div>\n";
-                                    echo "</div>\n";
+                                    echo "\n".'						<div class="col-lg-4 col-md-6 mb-4">'."\n";
+                                    echo '							<div class="card h-100">'."\n";
+                                    echo '								<a href="'.$t_link.'"><img class="card-img-top" src="'.$rezult['img'].'" alt=""></a>'."\n";
+                                    echo '								<div class="card-body">'."\n";
+                                    echo '									<h4 class="card-title">'."\n";
+                                    echo '										<a href="'.$t_link.'">'.$rezult['name'].'</a>'."\n";
+                                    echo '									</h4>'."\n";
+                                    echo '									<h5>'.$rezult["fiat_price"]." ".$rezult["fiat_type"]."</h5>\n";
+                                    echo '									<p class="card-text">'.$rezult['short_desc']."</p>\n";
+                                    echo "								</div>\n";
+                                    echo "							</div>\n";
+                                    echo "						</div>\n";
                                 }
 							} else {
 							    echo "No item`s in shop...";

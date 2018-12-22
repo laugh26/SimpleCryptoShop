@@ -10,7 +10,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/fontawesome-all.min.css">
 		<link rel="stylesheet" href="css/datatables.min.css">
 		<link rel="stylesheet" href="css/bootadmin.min.css">
@@ -34,25 +34,22 @@
 		<div class="d-flex">
 			<div class="sidebar sidebar-dark bg-dark">
 				<ul class="list-unstyled">
-					<li class="active"><a href="/"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
+					<li class="active"><a href="#"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
 					<li><a href="add.php"><i class="fa fa-fw fa-edit"></i> Add item</a></li>
 					<li><a href="orders.php"><i class="fa fa-fw fa-table"></i> Orders</a></li>
+					<li>
+						<a href="#sm_base" data-toggle="collapse" data-ss1545484090="1" class="" aria-expanded="false">
+							<i class="fa fa-fw fa-cube"></i> Manage
+						</a>
+						<ul id="sm_base" class="list-unstyled collapse" style="">
+							<li><a href="edit_items.php">Items</a></li>
+							<li><a href="edit_categorys.php">Categorys</a></li>
+						</ul>
+					</li>
 					<li><a href="settings.php"><i class="fa fa-fw fa-cog"></i> Settings</a></li>
 				</ul>
 			</div>
 			<div class="content p-4">
-				<div class="text-center mb-4">
-					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-					<!-- Responsive -->
-					<ins class="adsbygoogle"
-						style="display:block"
-						data-ad-client="ca-pub-4097235499795154"
-						data-ad-slot="5211442851"
-						data-ad-format="auto"></ins>
-					<script>
-						(adsbygoogle = window.adsbygoogle || []).push({});
-					</script>
-				</div>
 				<h2 class="mb-4">Dashboard</h2>
 				<div class="row mb-4">
 					<div class="col-md">
@@ -144,8 +141,8 @@
 				</div>
 			</div>
 		</div>
-		<script src="js/jquery.min.js"></script>
-		<script src="js/bootstrap.bundle.min.js"></script>
+		<script src="../vendor/jquery/jquery.min.js"></script>
+		<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 		<script src="js/datatables.min.js"></script>
 		<script src="js/moment.min.js"></script>
 		<script src="js/bootadmin.min.js"></script>

@@ -42,5 +42,8 @@
         DataBase($text, FALSE, FALSE);
     }
 
+    function escpe_val($string) {
+        return str_replace("'", "''", $string);
+    }
 
 ?>
