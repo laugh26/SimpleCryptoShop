@@ -43,7 +43,7 @@
 						</a>
 						<ul id="sm_base" class="list-unstyled collapse" style="">
 							<li><a href="edit_items.php">Items</a></li>
-							<li><a href="edit_categorys.php">Categorys</a></li>
+							<li><a href="edit_categories.php">Categories</a></li>
 						</ul>
 					</li>
 					<li><a href="settings.php"><i class="fa fa-fw fa-cog"></i> Settings</a></li>
@@ -104,8 +104,8 @@
 									<th scope="col">Item</th>
 									<th scope="col">TXID</th>
 									<th scope="col">Fiat</th>
-									<th scope="col">Crypto</th>
 									<th scope="col">System</th>
+									<th scope="col">Date</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -124,8 +124,8 @@
 										<td>".$payment['product']."</td>
 										<td>".$payment['txid']."</td>
 										<td>".$payment['fiat']."</td>
-										<td>".$payment['crypto']."</td>
 										<td>".$payment['system']."</td>
+										<td>".$payment['date']."</td>
 									</tr>\n";
 										}
 									} else {

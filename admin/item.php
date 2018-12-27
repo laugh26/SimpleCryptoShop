@@ -4,15 +4,20 @@
 	$status = '';
     $shop_info = DataBase("SELECT * FROM `settings`");
 
-    if (isset($_POST['new_item'])) {
-        $name = htmlspecialchars($_POST['name']);
+    if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+        
+    } else {
+		header('Location: /admin');
+	}
+
+	if (isset($_POST['update_item'])) {
+		$name = htmlspecialchars($_POST['name']);
         $sdesc = htmlspecialchars($_POST['sdesc']);
         $fdesc = escpe_val($_POST['fdesc']);
         $price = $_POST['price'];
         $fiat = $_POST['fiat_type'];
         $img = $_POST['item_image'];
 		$content = $_POST['cont'];
-		$quantity = sizeof(explode(PHP_EOL, $_POST['cont']));
 		
 		if (isset($_POST['category'])) {
 			$category = $_POST['category'];
@@ -22,24 +27,22 @@
 
         $vars = [
             'name', 'img', 'short_desc', 'full_desc',
-			'fiat_price', 'fiat_type', 'content', 'category',
-			'quantity'
+            'fiat_price', 'fiat_type', 'content', 'category'
         ];
 
         $values = [
             $name, $img, $sdesc, $fdesc,
-			$price, $fiat, $content, $category,
-			$quantity
+            $price, $fiat, $content, $category
         ];
 
 		InsertDB('items', $vars, $values);
 		$status = '<div class="alert alert-success alert-dismissible" role="alert">
-						Item added successfully!
+						Item update successfully!
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">×</span>
 					</button>
 				</div>';
-    }
+	}
 ?>
 <!doctype html>
 <html lang="en">
@@ -52,7 +55,7 @@
 		<link rel="stylesheet" href="css/bootadmin.min.css">
 		<link rel="stylesheet" href="minified/themes/default.min.css" />
 		<script src="minified/sceditor.min.js"></script>
-		<title>Add Item | <?php echo $shop_info['shop_name']; ?></title>
+		<title>Edit Item | <?php echo $shop_info['shop_name']; ?></title>
 	</head>
 	<body class="bg-light">
 		<nav class="navbar navbar-expand navbar-dark bg-primary">
@@ -73,7 +76,7 @@
 			<div class="sidebar sidebar-dark bg-dark">
 				<ul class="list-unstyled">
 					<li><a href="/admin"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
-					<li class="active"><a href="add.php"><i class="fa fa-fw fa-edit"></i> Add item</a></li>
+					<li><a href="add.php"><i class="fa fa-fw fa-edit"></i> Add item</a></li>
 					<li><a href="orders.php"><i class="fa fa-fw fa-table"></i> Orders</a></li>
 					<li>
 						<a href="#sm_base" data-toggle="collapse" data-ss1545484090="1" class="" aria-expanded="false">
@@ -128,8 +131,7 @@
 									</div>
 									<div class="form-group">
 										<label for="item_cnt">Item content</label>
-										<textarea type="text" id="item_cnt" class="form-control mr-sm-2" name="cont" placeholder="Item content(-s)" required></textarea>
-										<small class="form-text text-muted">Separate by new line</small>
+										<input type="text" id="item_cnt" class="form-control mr-sm-2" name="cont" placeholder="Item content" required>
 									</div>
 									<div class="form-group">
 										<label for="item_price">Item price</label>

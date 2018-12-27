@@ -25,8 +25,8 @@
         }
     }
 
-    function InsertDB($db_name, $to_vals, $values) {
-        $text = "INSERT INTO `$db_name` (";
+    function InsertDB($table, $to_vals, $values) {
+        $text = "INSERT INTO `$table` (";
 
         foreach ($to_vals as $vals) {
             $text .= "`".$vals."`, ";
@@ -35,11 +35,22 @@
         $text = substr($text, 0, strlen($text)-2).') VALUES (';
 
         foreach ($values as $vals) {
-            $text .= "'".$vals."', ";
+            $text .= (is_numeric($vals) ? $vals.', ' : "'".$vals."', ");
         }
 
         $text = substr($text, 0, strlen($text)-2).')';
         DataBase($text, FALSE, FALSE);
+    }
+
+    function UpdateDB($table, $to_vals, $values, $append='') {
+        $text = "UPDATE `$table` SET ";
+
+        for ($i = 0; $i != sizeof($to_vals); $i++) {
+            $text .= '`'.$to_vals[$i].'` = "'.$values[$i].'", ';
+        }
+
+        $text = substr($text, 0, strlen($text)-2);
+        DataBase($text.$append, FALSE, FALSE);
     }
 
     function escpe_val($string) {
