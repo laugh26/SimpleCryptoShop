@@ -15,6 +15,10 @@
 [![Admin. Login In](https://i.imgur.com/T9l8s9Hm.png)](https://i.imgur.com/T9l8s9H.png)
 [![Admin. Homepage](https://i.imgur.com/SlqZ2Fom.png)](https://i.imgur.com/SlqZ2Fo.png)
 [![Admin. Add item](https://i.imgur.com/MrJUWT7m.png)](https://i.imgur.com/MrJUWT7.png)
+[![Admin. Orders](https://i.imgur.com/vZC9cspm.png)](https://i.imgur.com/vZC9csp.png)
+[![Admin. Edit items](https://i.imgur.com/uCYuOErm.png)](https://i.imgur.com/uCYuOEr.png)
+[![Admin. Edit categorys](https://i.imgur.com/gjf7rm7m.png)](https://i.imgur.com/gjf7rm7.png)
+[![Admin. Settings](https://i.imgur.com/Sgwzcipm.png)](https://i.imgur.com/Sgwzcip.png)
 
 
 # About
