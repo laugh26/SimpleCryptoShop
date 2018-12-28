@@ -35,7 +35,7 @@
         $text = substr($text, 0, strlen($text)-2).') VALUES (';
 
         foreach ($values as $vals) {
-            $text .= (is_numeric($vals) ? $vals.', ' : "'".$vals."', ");
+            $text .= (is_numeric($vals) || is_float($vals) ? $vals.', ' : "'".escpe_val($vals)."', ");
         }
 
         $text = substr($text, 0, strlen($text)-2).')';
@@ -46,7 +46,7 @@
         $text = "UPDATE `$table` SET ";
 
         for ($i = 0; $i != sizeof($to_vals); $i++) {
-            $text .= '`'.$to_vals[$i].'` = "'.$values[$i].'", ';
+            $text .= '`'.$to_vals[$i].'` = '.(is_numeric($values[$i]) || is_float($values[$i]) ? $values[$i] : "'".escpe_val($values[$i])."'").', ';
         }
 
         $text = substr($text, 0, strlen($text)-2);

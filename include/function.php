@@ -1,51 +1,50 @@
 <?php
 
+	include 'db.php';
+
 	function Find_Payment($tx_id, $crypto, $price) {
-		include 'settings.php';
+		$wallets = DataBase('SELECT * FROM `wallets`');
 		
 		try {
-			if($crypto == "monero") {
-				$var = file('https://xmrchain.net/myoutputs/'.$tx_id."/$xmr/$vwk");
+			if($crypto == "XMR") {
+				$var = file("https://xmrchain.net/myoutputs/$tx_id/".$wallets['XMR'].'/'.$wallets['XMRV']);
+
 				for($i=160; $i != sizeof($var); $i++)
-					if(strstr($var[$i], $price)) {
+					if(strstr($var[$i], $price))
 						$buyed = true;
-					}
-			} else if($crypto == "ethereum") {
+			} else if($crypto == "ETH") {
 				$massive = implode('', file("https://api.ethplorer.io/getTxInfo/$tx_id?apiKey=freekey"));
-					$massive = json_decode($massive, true);
-					
-					if($massive['to']==$eth)
-						if($massive['value'] >= $price)
-							return true;
-			} else if($crypto == "bitcoin") {
+				$massive = json_decode($massive, true);
+				
+				if($massive['to'] == $wallets[$crypto])
+					if($massive['value'] >= $price)
+						return true;
+			} else if($crypto == "BTC") {
 				$massive = implode('', file("https://blockchain.info/rawtx/$tx_id"));
-					$massive = json_decode($massive, true);
-						
-					for($i =0; $i != count($massive['out']); $i++)
-						if($massive['out'][$i]['addr'] == $btc)
-							if($massive['out'][$i]['value'] >= $price*10**8)
-								return true;
-			} else if($crypto == "litecoin") {
+				$massive = json_decode($massive, true);
+				
+				foreach($massive['out'] as $out)
+					if ($out['addr'] == $wallets[$crypto] && $out['value'] >= $price*10**8)
+						return true;
+			} else if($crypto == "LTC") {
 				$massive = implode('', file("https://chainz.cryptoid.info/explorer/tx.raw.dws?coin=ltc&id=$tx_id&fmt.js"));
-					$massive = json_decode($massive, true);
-					
-					for($i =0; $i != count($massive['vout']); $i++)
-						if($massive['vout'][$i]['value'] >= "$price")
-							if($massive['vout'][$i]['scriptPubKey']['addresses'][0] == "$ltc")
-								return true;
-			} else if($crypto == "dash") {
+				$massive = json_decode($massive, true);
+				
+				foreach($massive['vout'] as $out)
+					if($out['scriptPubKey']['addresses'][0] == $wallets[$crypto] && $out['value'] >= $price)
+						return true;
+			} else if($crypto == "DASH") {
 				$massive = implode('', file("https://chainz.cryptoid.info/explorer/tx.raw.dws?coin=dash&id=$tx_id&fmt.js"));
-					$massive = json_decode($massive, true);
-					
-					for($i =0; $i != count($massive['vout']); $i++)
-						if($massive['vout'][$i]['value'] >= "$price")
-							if($massive['vout'][$i]['scriptPubKey']['addresses'][0] == "$dash")
-								return true;
-			} else {
-				return;
+				$massive = json_decode($massive, true);
+				
+				foreach($massive['vout'] as $out)
+					if($out['scriptPubKey']['addresses'][0] == $wallets[$crypto] && $out['value'] >= $price)
+						return true;
 			}
+
+			return false;
 		} catch (Exception $e) {
-			return;
+			return false;
 		}
 	}
 
@@ -53,10 +52,10 @@
 		$ids = [];
 		$massive = implode('', file("https://api.coinmarketcap.com/v2/listings/"));
 		$massive = json_decode($massive, true);
-		
-		for ($i=0; $i != count($massive['data']); $i++)
-			if (in_array($massive['data'][$i]['symbol'], $names))
-				array_push($ids, $massive['data'][$i]['id']);
+
+		foreach($massive['data'] as $out)
+			if (in_array($out['symbol'], $names))
+				array_push($ids, $out['id']);
 
 		return $ids;
 	}
@@ -75,7 +74,31 @@
 	}
 	
 	function Conventer($fiat, $crypto, $fiat_type) {
-		return 1 * $fiat / retPrice($crypto, $fiat_type);
+		return 1 * (float)$fiat / retPrice($crypto, $fiat_type)[0];
+	}
+
+	function get_item($id) {
+		$new = '';
+		$items = DataBase('SELECT `content`, `quantity` FROM `items` WHERE `id` = '.$id);
+		$count = $items['quantity'] - 1;
+		$items = explode(PHP_EOL, $items['content']);
+		$item = $items[0];
+		unset($items[0]);
+
+		foreach($items as $itm) {
+			$new .= $itm.'\n';
+		}
+
+		$new = substr($new, 0, strlen($new)-2);
+
+		UpdateDB('items', ['content', 'quantity'], [escpe_val($new), $count]);
+		return $item;
+	}
+
+	function back_item($id, $item) {
+		$items = DataBase('SELECT `content`, `quantity` FROM `items` WHERE `id` = '.$id);
+		$count = $items['quantity'] + 1;
+		UpdateDB('items', ['content', 'quantity'], [escpe_val($items['content']."\n".$item), $count]);
 	}
 
 ?>

@@ -7,7 +7,7 @@
     if (isset($_POST['new_item'])) {
         $name = htmlspecialchars($_POST['name']);
         $sdesc = htmlspecialchars($_POST['sdesc']);
-        $fdesc = escpe_val($_POST['fdesc']);
+        $fdesc = $_POST['fdesc'];
         $price = $_POST['price'];
         $fiat = $_POST['fiat_type'];
         $img = $_POST['item_image'];
