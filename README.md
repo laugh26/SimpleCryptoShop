@@ -1,12 +1,13 @@
-!!! Shop in updating (14/12/2018)
+!!! Shop in updating (28/12/2018). Master branch currently - unstabled.
 
 - [x] Add category to item
 - [x] New design
 - - [x] Index
 - - [x] Item
-- - [ ] Buy
-- - [ ] Admin
-- [ ] TEMP. 30 min to buy
+- - [x] Buy
+- - [x] Admin
+- [x] Captcha
+- [x] TEMP. 30 min to buy
 - [ ] Speed Up
 
 
