@@ -1,4 +1,5 @@
 <?php
+	error_reporting(E_ALL ^ E_WARNING);
 
 	include 'db.php';
 
@@ -20,7 +21,7 @@
 					if($massive['value'] >= $price)
 						return true;
 			} else if($crypto == "BTC") {
-				$massive = implode('', file("https://blockchain.info/rawtx/$tx_id"));
+				$massive = implode('', file("https://blockchain.com/rawtx/$tx_id"));
 				$massive = json_decode($massive, true);
 				
 				foreach($massive['out'] as $out)

@@ -41,7 +41,7 @@
 
                 InsertDB('temp', $vars, $values);
                 $text = '<span>Successfully created order. Wait few seconds and you has been redirected.</span>
-                <script>setTimeout(function() { location.href = "/order.php?hash='.$hash.'"; }, 1500);</script>';
+                <script>setTimeout(function() { location.href = "/order.php"; }, 1500);</script>';
                 session_destroy();
                 session_start();
                 $_SESSION['order_hash'] = $hash;

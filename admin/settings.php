@@ -35,6 +35,8 @@
             $_POST['XMR'],
             $_POST['XMRV']
         ];
+
+        UpdateDB('wallets', $vars, $values);
     } elseif (isset($_POST['update_settings'])) {
         $vars = [
             'shop_name',
