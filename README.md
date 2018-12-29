@@ -1,16 +1,3 @@
-!!! Shop in updating (28/12/2018). Master branch currently - unstabled.
-
-- [x] Add category to item
-- [x] New design
-- - [x] Index
-- - [x] Item
-- - [x] Buy
-- - [x] Admin
-- [x] Captcha
-- [x] TEMP. 30 min to buy
-- [ ] Speed Up
-
-
 ![Index](https://i.imgur.com/axwIbbW.png)
 ![Item](https://i.imgur.com/t3VQvis.png)
 [![Admin. Login In](https://i.imgur.com/T9l8s9Hm.png)](https://i.imgur.com/T9l8s9H.png)
@@ -21,9 +8,12 @@
 [![Admin. Edit categorys](https://i.imgur.com/gjf7rm7m.png)](https://i.imgur.com/gjf7rm7.png)
 [![Admin. Settings](https://i.imgur.com/Sgwzcipm.png)](https://i.imgur.com/Sgwzcip.png)
 
-
 # About
 Simple crypto-shop source. Based on public API\`s: Blockchain, Ethplorer, XMRChain and CryptoID.
+
+# Required
+- PHP 7
+- SQLite3 support
 
 # Features
 - No need API key\`s
@@ -32,11 +22,27 @@ Simple crypto-shop source. Based on public API\`s: Blockchain, Ethplorer, XMRCha
 - Convert price from UAH, USD, CHF, RUB, BLN, PLN, GBP to crypto
 - Support DASH, XMR, ETH, BTC, LTC to payment
 - Orders history
+- Captcha for prevent attack
 - Basic shop-security
-> But only support text items*
+- Easy to migrate a project, use SQLite3 as a database
+
+# Plans
+- [ ] Multi-items buy as one order
+- [ ] Speed Up
 
 ### Instruction
 1. Download
-2. Set `chmod 777 include include/db.php include/db.php`
+2. Set `chmod 777 include include/db.php include/db.sqlite3 include/db.php`
 
 Default: admin;admin
+
+# Thanks, to
+- [XMR Chain](https://xmrchain.net/), [Ethplorer](https://ethplorer.io/), [Chainz](https://chainz.cryptoid.info/) and [Blockchain](https://www.blockchain.com/) for gives free, public API
+- [Boot Admin](https://bootadmin.net/) for gives a design
+
+
+# Donations
+If you want the project to develop and be supported, you can throw a few euros on my food
+- [x] BTC: 1Jr7r5czqkXjU4kT3QWYQHYWYQaveppXdN
+- [x] ETH: 0x990BC87DfF401E53D5f016268FbB10A0aE370DEd
+- [x] BCH: qprmasay4tq2l4ynmkk5s7sujxauyls5cuf7kp2zdz
