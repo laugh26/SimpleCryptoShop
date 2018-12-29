@@ -1,9 +1,7 @@
 <?php
 
     session_start();
-
-    $_SESSION['user'] = '';
-    $_SESSION['password'] = '';
+    session_destroy();
 
     header('Location: /admin');
 

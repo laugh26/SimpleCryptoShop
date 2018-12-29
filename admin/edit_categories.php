@@ -22,7 +22,7 @@
     }
 
     $shop_info = DataBase("SELECT * FROM `settings`");
-    $sales = DataBase("SELECT COUNT(*) FROM `payments`")[0];
+    $cats = DataBase("SELECT COUNT(*) FROM `category`")[0];
 ?>
 <!doctype html>
 <html lang="en">
@@ -86,20 +86,20 @@
                                     </thead>
                                     <tbody>
                                     <?php
-                                        if ($sales > 0) {
-                                            $payments = DataBase(
+                                        if ($cats > 0) {
+                                            $categorys = DataBase(
                                                 'SELECT * FROM `category`',
                                                 TRUE,
                                                 TRUE
                                             );
 
-                                            foreach($payments as $payment) {
+                                            foreach($categorys as $category) {
                                                 echo "\n                                 <tr>
-                                            <td>".$payment['id'].'</td>
-                                            <td><input type="text" id="c'.$payment['id'].'" class="form-control mr-sm-2" value="'.$payment['name'].'"></td>
+                                            <td>".$category['id'].'</td>
+                                            <td><input type="text" id="c'.$category['id'].'" class="form-control mr-sm-2" value="'.$category['name'].'"></td>
                                             <td>
-                                                <button class="btn btn-primary" onclick="xr(2, '.$payment['id'].');"><i class="fas fa-edit"></i></button>
-                                                <button class="btn btn-danger" onclick="xr(1, '.$payment['id'].');"><i class="fas fa-trash-alt"></i></button>
+                                                <button class="btn btn-primary" onclick="xr(2, '.$category['id'].');"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-danger" onclick="xr(1, '.$category['id'].');"><i class="fas fa-trash-alt"></i></button>
                                             </td>
                                         </tr>'."\n";
                                             }

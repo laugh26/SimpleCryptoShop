@@ -57,7 +57,7 @@
 						<table id="orders" class="table table-hover" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-									<th>Order ID</th>
+									<th>ID</th>
 									<th>Item</th>
 									<th class="actions sorting_disabled" style="text-align: left;">TXID</th>
 									<th>Fiat</th>

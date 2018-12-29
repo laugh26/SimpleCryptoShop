@@ -5,7 +5,7 @@
     $category = FALSE;
     $shop_info = DataBase("SELECT * FROM `settings`");
 	
-	if (DataBase("SELECT COUNT(*) FROM `items`")[0] > 0) {
+	if (DataBase("SELECT COUNT(*) FROM `items` WHERE `quantity` >= 1")[0] > 0) {
 	    $status = TRUE;
 	} else {
 	    $status = FALSE;
@@ -42,6 +42,9 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbarResponsive">
 					<ul class="navbar-nav ml-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="order.php">Order</a>
+						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="about">About</a>
 						</li>

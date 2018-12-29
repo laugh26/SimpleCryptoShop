@@ -1,6 +1,8 @@
 <?php
     include 'inc/on.php';
     
+    $updst = '';
+
     if (isset($_POST['update_slides'])) {
         $vars = [
             'first_screen',
@@ -33,6 +35,8 @@
             $_POST['XMR'],
             $_POST['XMRV']
         ];
+
+        UpdateDB('wallets', $vars, $values);
     } elseif (isset($_POST['update_settings'])) {
         $vars = [
             'shop_name',
@@ -47,6 +51,13 @@
         ];
 
         UpdateDB('settings', $vars, $values);
+    } elseif (isset($_POST['update_passw'])) {
+        if (hash_value($_POST['opass']) == $_SESSION['password']) {
+            UpdateDB('admins', ['password'], [hash_value($_POST['npass'])], ' WHERE `password` = "'.hash_value($_POST['opass']).'"');
+            $updst = 'Successfull.';
+        } else {
+            $updst = 'Wrong old password.';
+        }
     }
 
     $shop_info = DataBase("SELECT * FROM `settings`");
@@ -190,6 +201,30 @@
                                         <button class="btn btn-primary" type="submit">Update</button>
                                     </div>
                                     <input type="hidden" name="update_slides" value="yes">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header bg-white font-weight-bold">
+                                Change current password
+                            </div>
+                            <div class="card-body">
+                                <form method="post">
+                                    <div class="form-group">
+                                        <label for="opass">Old password</label>
+                                        <input type="text" id="opass" class="form-control mr-sm-2" name="opass" placeholder="Your old password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="npass">New password</label>
+                                        <input type="text" id="npass" class="form-control mr-sm-2" name="npass" placeholder="New password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" type="submit">Update</button>
+                                    </div>
+                                    <input type="hidden" name="update_passw" value="yes">
+                                    <small class="form-text text-muted"><?php echo $updst; ?></small>
                                 </form>
                             </div>
                         </div>

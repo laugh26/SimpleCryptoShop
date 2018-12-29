@@ -1,23 +1,26 @@
 <?php
-    include 'inc/on.php';
-
-	$status = '';
-    $shop_info = DataBase("SELECT * FROM `settings`");
-
-    if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-        
+	include 'inc/on.php';
+	
+	if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+        if (DataBase("SELECT COUNT(*) FROM `items` WHERE `id` = ".$_GET['id'])[0] == 0) {
+			header('Location: /admin');
+		}
     } else {
 		header('Location: /admin');
 	}
 
-	if (isset($_POST['update_item'])) {
-		$name = htmlspecialchars($_POST['name']);
+	$status = '';
+	$shop_info = DataBase("SELECT * FROM `settings`");
+
+    if (isset($_POST['update_item'])) {
+        $name = htmlspecialchars($_POST['name']);
         $sdesc = htmlspecialchars($_POST['sdesc']);
         $fdesc = escpe_val($_POST['fdesc']);
         $price = $_POST['price'];
         $fiat = $_POST['fiat_type'];
         $img = $_POST['item_image'];
 		$content = $_POST['cont'];
+		$quantity = sizeof(explode(PHP_EOL, $_POST['cont']));
 		
 		if (isset($_POST['category'])) {
 			$category = $_POST['category'];
@@ -27,22 +30,26 @@
 
         $vars = [
             'name', 'img', 'short_desc', 'full_desc',
-            'fiat_price', 'fiat_type', 'content', 'category'
+			'fiat_price', 'fiat_type', 'content', 'category',
+			'quantity'
         ];
 
         $values = [
             $name, $img, $sdesc, $fdesc,
-            $price, $fiat, $content, $category
+			$price, $fiat, $content, $category,
+			$quantity
         ];
 
-		InsertDB('items', $vars, $values);
+		UpdateDB('items', $vars, $values, ' WHERE `id` = '.$_GET['id']);
 		$status = '<div class="alert alert-success alert-dismissible" role="alert">
-						Item update successfully!
+						Item updated successfully!
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">×</span>
 					</button>
 				</div>';
 	}
+	
+	$item_info = DataBase("SELECT * FROM `items` WHERE `id` = ".$_GET['id']);
 ?>
 <!doctype html>
 <html lang="en">
@@ -102,14 +109,14 @@
 								<form method="post">
 									<div class="form-group">
 										<div class="form-inline">
-											<input type="text" onkeypress="preview_set('name');" id="item_name" class="form-control mr-sm-2" name="name" maxlength="20" placeholder="Item name" required>
+											<input type="text" onkeypress="preview_set('name');" id="item_name" class="form-control mr-sm-2" name="name" maxlength="20" placeholder="Item name" value="<?php echo $item_info['name']; ?>" required>
 											<select name="category" class="form-control">
-												<option value="" disabled selected>Select category</option>
+												<option value="" disabled>Select category</option>
 												<?php
 													$rezults = DataBase('SELECT * FROM `category`', TRUE, TRUE);
 
 													foreach ($rezults as $rezult) {
-														echo '<option value="'.$rezult['id'].'">'.$rezult['name'].'</option>'."\n";
+														echo '<option value="'.$rezult['id'].'"'.($item_info['category'] == $rezult['id'] ? ' selected' : '').'>'.$rezult['name'].'</option>'."\n";
 													}
 												?>
 											</select>
@@ -118,46 +125,49 @@
 									</div>
 									<div class="form-group">
 										<label for="item_img">Item image</label>
-										<input type="text" onkeypress="preview_set('img');" id="item_img" class="form-control mr-sm-2" name="item_image" placeholder="Item image" required>
+										<input type="text" onkeypress="preview_set('img');" id="item_img" class="form-control mr-sm-2" name="item_image" placeholder="Item image" value="<?php echo $item_info['img']; ?>" required>
 									</div>
 									<div class="form-group">
 										<label for="item_sdesc">Item short desc</label>
-										<input type="text" onkeypress="preview_set('sdesc');" class="form-control" id="item_sdesc" class="form-control mr-sm-2" name="sdesc" maxlength="90" placeholder="Short desc" required>
+										<input type="text" onkeypress="preview_set('sdesc');" class="form-control" id="item_sdesc" class="form-control mr-sm-2" name="sdesc" maxlength="90" placeholder="Short desc" value="<?php echo $item_info['short_desc']; ?>" required>
 										<small class="form-text text-muted">Max. 90</small>
 									</div>
 									<div class="form-group">
 										<label for="item_fdesc">Item full desc</label>
-										<textarea class="form-control" placeholder="Paste full item desc" id="item_fdesc" name="fdesc" rows="10" required></textarea>
+										<textarea class="form-control" placeholder="Paste full item desc" id="item_fdesc" name="fdesc" rows="10" required><?php echo $item_info['full_desc']; ?></textarea>
 									</div>
 									<div class="form-group">
 										<label for="item_cnt">Item content</label>
-										<input type="text" id="item_cnt" class="form-control mr-sm-2" name="cont" placeholder="Item content" required>
+										<textarea type="text" id="item_cnt" class="form-control mr-sm-2" name="cont" placeholder="Item content(-s)" required><?php echo $item_info['content']; ?></textarea>
+										<small class="form-text text-muted">Separate by new line</small>
 									</div>
 									<div class="form-group">
 										<label for="item_price">Item price</label>
 										<div class="form-inline">
-											<input type="number" onkeypress="preview_set('price');" id="item_price" class="form-control" name="price" placeholder="Fiat price" required>
+											<input type="number" onkeypress="preview_set('price');" id="item_price" class="form-control" name="price" placeholder="Fiat price" value="<?php echo $item_info['fiat_price']; ?>" required>
 											<div class="input-group-append">
 												<select onchange="preview_set('cur');" id="item_cur" name="fiat_type" class="form-control" required>
-													<option value="" disabled selected>Select fiat</option>
-													<option value="UAH">UAH</option>
-													<option value="USD">USD</option>
-													<option value="GBP">GBP</option>
-													<option value="RUB">RUB</option>
-													<option value="EUR">EUR</option>
-													<option value="CZK">CZK</option>
-													<option value="BLN">BLN</option>
-													<option value="PLN">PLN</option>
-													<option value="CHF">CHF</option>
-													<option value="AED">AED</option>
+													<?php
+														$fiat_list = [
+															'UAH', 'USD',
+															'GBP', 'RUB',
+															'EUR', 'CZK',
+															'BLN', 'PLN',
+															'CHF', 'AED'
+														];
+
+														foreach($fiat_list as $_fiat) {
+															echo '<option value="'.$_fiat.'"'.($item_info['fiat_type'] == $_fiat ? ' selected' : '').">$_fiat</option>";
+														}
+													?>
 												</select>
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<button class="btn btn-primary" type="submit">Add new item</button>
+										<button class="btn btn-primary" type="submit">Update item</button>
 									</div>
-									<input type="hidden" name="new_item" value="yes">
+									<input type="hidden" name="update_item" value="yes">
 								</form>
 							</div>
 						</div>
@@ -169,13 +179,13 @@
 							</div>
 							<div class="card-body">
 								<div class="card h-100">
-									<img id="prev_img" class="card-img-top" src="https://wallpaperbrowse.com/media/images/5611472-simple-images.png" alt="" data-ss1545481278="1">
+									<img id="prev_img" class="card-img-top" src="<?php echo $item_info['img']; ?>" alt="" data-ss1545481278="1">
 									<div class="card-body">
 										<h4 id="prev_name" class="card-title">
-											Test item
+											<?php echo $item_info['name']; ?>
 										</h4>
-										<h5 id="prev_price">2000 EUR</h5>
-										<p id="prev_sdesc" class="card-text">First item in shop First item in shop First item in shop First item in shop First item in shop </p>
+										<h5 id="prev_price"><?php echo $item_info['fiat_price']; ?> <?php echo $item_info['fiat_type']; ?></h5>
+										<p id="prev_sdesc" class="card-text"><?php echo $item_info['short_desc']; ?></p>
 									</div>
 								</div>
 							</div>

@@ -6,7 +6,7 @@
     }
 
     $shop_info = DataBase("SELECT * FROM `settings`");
-    $sales = DataBase("SELECT COUNT(*) FROM `payments`")[0];
+    $itms = DataBase("SELECT COUNT(*) FROM `items`")[0];
 ?>
 <!doctype html>
 <html lang="en">
@@ -70,22 +70,22 @@
                             </thead>
                             <tbody>
                             <?php
-                                if ($sales > 0) {
-                                    $payments = DataBase(
+                                if ($itms > 0) {
+                                    $items = DataBase(
                                         'SELECT * FROM `items`',
                                         TRUE,
                                         TRUE
                                     );
 
-                                    foreach($payments as $payment) {
+                                    foreach($items as $item) {
                                         echo "\n                                 <tr>
-                                    <td>".$payment['id'].'</td>
-                                    <td>'.$payment['name'].'</td>
-                                    <td>'.$payment['fiat_price'].'</td>
-                                    <td>'.$payment['fiat_type'].'</td>
+                                    <td>".$item['id'].'</td>
+                                    <td>'.$item['name'].'</td>
+                                    <td>'.$item['fiat_price'].'</td>
+                                    <td>'.$item['fiat_type'].'</td>
                                     <td>
-                                        <a class="btn btn-primary" href="item.php?id='.$payment['id'].'"><i class="fas fa-edit"></i></a>
-                                        <button class="btn btn-danger" onclick="xr('.$payment['id'].');"><i class="fas fa-trash-alt"></i></button>
+                                        <a class="btn btn-primary" href="item.php?id='.$item['id'].'"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-danger" onclick="xr('.$item['id'].');"><i class="fas fa-trash-alt"></i></button>
                                     </td>
                                 </tr>'."\n";
                                     }

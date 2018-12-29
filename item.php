@@ -1,7 +1,6 @@
 <?php
 
-	include("include/db.php");
-	include("include/function.php");
+	include "include/function.php";
 
     $shop_info = DataBase("SELECT * FROM `settings`");
 
@@ -84,11 +83,11 @@
               <h2 class="card-title"><?php echo $information['name']; ?></h2>
               <h5><?php echo $information['fiat_price'].' '.$information['fiat_type']; ?></h5>
               <p class="card-text"><?php echo $information['full_desc']; ?></p>
-              <a href="/buy.php?id=<?php echo $information['id']; ?>" class="btn btn-info"><img src="img/btc.png"></a>
-              <a href="/buy.php?id=<?php echo $information['id']; ?>" class="btn btn-info"><img src="img/eth.png"></a>
-              <a href="/buy.php?id=<?php echo $information['id']; ?>" class="btn btn-info"><img src="img/xmr.png"></a>
-              <a href="/buy.php?id=<?php echo $information['id']; ?>" class="btn btn-info"><img src="img/ltc.png"></a>
-              <a href="/buy.php?id=<?php echo $information['id']; ?>" class="btn btn-info"><img src="img/dash.png"></a>
+              <a href="/buy.php?id=<?php echo $information['id']; ?>&c=BTC" class="btn btn-info"><img src="img/btc.png"></a>
+              <a href="/buy.php?id=<?php echo $information['id']; ?>&c=ETH" class="btn btn-info"><img src="img/eth.png"></a>
+              <a href="/buy.php?id=<?php echo $information['id']; ?>&c=XMR" class="btn btn-info"><img src="img/xmr.png"></a>
+              <a href="/buy.php?id=<?php echo $information['id']; ?>&c=LTC" class="btn btn-info"><img src="img/ltc.png"></a>
+              <a href="/buy.php?id=<?php echo $information['id']; ?>&c=DASH" class="btn btn-info"><img src="img/dash.png"></a>
             </div>
           </div>
           <!-- /.card -->
