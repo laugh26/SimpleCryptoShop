@@ -6,13 +6,13 @@
 
 	if (isset($_POST['user']) && isset($_POST['pass']) && isset($_SESSION['captcha']['code']) && isset($_POST['captcha'])) {
         if ($_POST['captcha'] == $_SESSION['captcha']['code']) {
-            $user = hash_value(preg_replace("[^\w\d\s]", "", $_POST['user']));
-            $passw = hash_value(preg_replace("[^\w\d\s]", "", $_POST['pass']));
-            $rez = DataBase("SELECT COUNT(*) FROM `admins` WHERE `username` = '$user' AND `password` = '$passw'")[0];
+            $rez = DataBase("SELECT `username`, `password` FROM `admins`");
 
-            if ($rez == 1) {
-                $_SESSION['user'] = $user;
-                $_SESSION['password'] = $passw;
+            if (password_verify($_POST['user'], $rez['username']) && password_verify($_POST['pass'], $rez['password'])) {
+                $_SESSION['plainuser'] = $_POST['user'];
+                $_SESSION['password'] = $_POST['pass'];
+                $_SESSION['hashed_passw'] = $rez['password'];
+
                 header('Location: /admin/');
             }
         }
@@ -79,7 +79,7 @@
 		<script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 		<script src="../js/datatables.min.js"></script>
 		<script src="../js/moment.min.js"></script>
-		<script src="./js/bootadmin.min.js"></script>
+		<script src="../js/bootadmin.min.js"></script>
 
     </body>
 </html>

@@ -22,7 +22,7 @@
 			<div class="navbar-collapse collapse">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item dropdown">
-						<a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Admin</a>
+						<a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['plainuser']; ?></a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd_user">
 							<a href="logout.php" class="dropdown-item">Logout</a>
 						</div>

@@ -52,8 +52,8 @@
 
         UpdateDB('settings', $vars, $values);
     } elseif (isset($_POST['update_passw'])) {
-        if (hash_value($_POST['opass']) == $_SESSION['password']) {
-            UpdateDB('admins', ['password'], [hash_value($_POST['npass'])], ' WHERE `password` = "'.hash_value($_POST['opass']).'"');
+        if (password_verify($_POST['opass'], $_SESSION['hashed_passw'])) {
+            UpdateDB('admins', ['password'], [password_hash($_POST['npass'], PASSWORD_DEFAULT)], ' WHERE `password` = "'.$_SESSION['hashed_passw'].'"');
             $updst = 'Successfull.';
         } else {
             $updst = 'Wrong old password.';
@@ -81,7 +81,7 @@
 			<div class="navbar-collapse collapse">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item dropdown">
-						<a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Admin</a>
+						<a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['plainuser']; ?></a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd_user">
 							<a href="logout.php" class="dropdown-item">Logout</a>
 						</div>
