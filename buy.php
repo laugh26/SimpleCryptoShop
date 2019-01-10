@@ -1,5 +1,6 @@
 <?php
     session_start();
+    date_default_timezone_get();
 
     include 'include/function.php';
     include 'include/captcha/captcha.php';
@@ -30,13 +31,13 @@
                 $vars = [
                     'ip', 'hash', 'name', 'crypto',
                     'crypto_price', 'fiat', 'fiat_price',
-                    'item_id', 'content'
+                    'item_id', 'content', 'end'
                 ];
 
                 $values = [
                     $ip, $hash, $_SESSION['iname'], $_SESSION['crypto'],
                     $must_pay, $_SESSION['ftype'], $_SESSION['fprice'],
-                    $_SESSION['item_id'], $content
+                    $_SESSION['item_id'], $content, date("Y-m-d H:i:s", strtotime("+30 minutes"))
                 ];
 
                 InsertDB('temp', $vars, $values);

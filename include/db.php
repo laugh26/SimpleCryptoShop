@@ -14,6 +14,7 @@
             }
 
             $db = NULL;
+
             return $rez;
         } else {
             $rez = $db->exec($sql);
@@ -38,7 +39,7 @@
         DataBase($text, FALSE, FALSE);
     }
 
-    function UpdateDB($table, $to_vals, $values, $append='') {
+    function UpdateDB($table, $to_vals, $values, $append='', $noret = True) {
         $text = "UPDATE `$table` SET ";
 
         for ($i = 0; $i != sizeof($to_vals); $i++) {
@@ -46,7 +47,12 @@
         }
 
         $text = substr($text, 0, strlen($text)-2);
-        DataBase($text.$append, FALSE, FALSE);
+
+        if ($noret){
+            DataBase($text.$append, FALSE, FALSE);
+        } else {
+            return $text.$append;
+        }
     }
 
     function escpe_val($string) {

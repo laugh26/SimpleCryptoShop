@@ -92,9 +92,17 @@
 
         // But we need check to prevent errors if hash droped from `temp`
         if ($ha == 1) {
+            $wallet = DataBase('SELECT `'.$ti['crypto'].'` FROM `wallets`')[0];
+
             $text = '<form method="post">
                     <div class="input-group">
                         <p>You want to buy "<b>'.$ti['name'].'</b>" for <b>'.$ti['fiat_price'].' '.$ti['fiat'].'</b> ('.$ti['crypto_price'].' '.$ti['crypto'].')</p>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span>You must pay to: <b>'.$ti['end'].'</b></span>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span>Wallet: <b>'.$wallet.'</b></span>
                     </div>
                     <div class="form-group" style="text-align:center;">
                         <img title="Captcha" src="'.$_SESSION['captcha']['image_src'].'">
@@ -105,7 +113,7 @@
                         </div>
                         <input type="text" name="txid" class="form-control" placeholder="TXID">
                     </div>
-                    <small class="form-text text-muted">Remember! Send an amount equal to or greater than the one shown to you in crypto.</small>
+                    <small class="form-text text-muted">Remember! Send an amount equal to or greater than the one shown to you in crypto by one transaction</small>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
