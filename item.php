@@ -60,11 +60,11 @@
             <div class="list-group">
                 <?php
 
-                    $prices = retPrice(['BTC', 'XMR', 'ETH', 'LTC', 'DASH'], $information['fiat_type']);
+                    $prices = retPrice(['BTC', 'TXX', 'ETH', 'LTC', 'DASH'], $information['fiat_type']);
 
                     echo "
                         <span>1 BTC = ".$prices[0]." ".$information['fiat_type']."</span>
-                        <span>1 XMR = ".$prices[1]." ".$information['fiat_type']."</span>
+                        <span>1 TXX = ".$prices[1]." ".$information['fiat_type']."</span>
                         <span>1 ETH = ".$prices[2]." ".$information['fiat_type']."</span>
                         <span>1 LTC = ".$prices[3]." ".$information['fiat_type']."</span>
                         <span>1 DASH = ".$prices[4]." ".$information['fiat_type']."</span>
@@ -85,7 +85,7 @@
               <p class="card-text"><?php echo $information['full_desc']; ?></p>
               <a href="/buy.php?id=<?php echo $information['id']; ?>&c=BTC" class="btn btn-info"><img src="img/btc.png"></a>
               <a href="/buy.php?id=<?php echo $information['id']; ?>&c=ETH" class="btn btn-info"><img src="img/eth.png"></a>
-              <a href="/buy.php?id=<?php echo $information['id']; ?>&c=XMR" class="btn btn-info"><img src="img/xmr.png"></a>
+              <a href="/buy.php?id=<?php echo $information['id']; ?>&c=TXX" class="btn btn-info"><img src="img/txx.png"></a>
               <a href="/buy.php?id=<?php echo $information['id']; ?>&c=LTC" class="btn btn-info"><img src="img/ltc.png"></a>
               <a href="/buy.php?id=<?php echo $information['id']; ?>&c=DASH" class="btn btn-info"><img src="img/dash.png"></a>
             </div>

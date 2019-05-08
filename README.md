@@ -10,7 +10,7 @@
 [![User. Order](https://i.imgur.com/2h1LD5zm.png)](https://i.imgur.com/2h1LD5z.png)
 
 # About
-Simple crypto-shop source. Based on public API\`s: Blockchain, Ethplorer, XMRChain and CryptoID.
+Simple crypto-shop source. Based on public API\`s: Blockchain, Ethplorer, TXXChain and CryptoID.
 
 # Required
 - PHP 7
@@ -21,7 +21,7 @@ Simple crypto-shop source. Based on public API\`s: Blockchain, Ethplorer, XMRCha
 - Clear PHP code
 - Responsible design
 - Convert price from UAH, USD, CHF, RUB, BLN, PLN, GBP to crypto
-- Support DASH, XMR, ETH, BTC, LTC to payment
+- Support DASH, TXX, ETH, BTC, LTC to payment
 - Orders history
 - Captcha for prevent attack
 - Basic shop-security
@@ -39,7 +39,7 @@ Simple crypto-shop source. Based on public API\`s: Blockchain, Ethplorer, XMRCha
 Default: admin;admin
 
 # Thanks, to
-- [XMR Chain](https://xmrchain.net/), [Ethplorer](https://ethplorer.io/), [Chainz](https://chainz.cryptoid.info/) and [Blockchain](https://www.blockchain.com/) for gives free, public API
+- [TXX Chain](https://xmrchain.net/), [Ethplorer](https://ethplorer.io/), [Chainz](https://chainz.cryptoid.info/) and [Blockchain](https://www.blockchain.com/) for gives free, public API
 - [Boot Admin](https://bootadmin.net/) for gives a design
 
 

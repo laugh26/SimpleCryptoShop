@@ -23,8 +23,8 @@
             'ETH',
             'LTC',
             'DASH',
-            'XMR',
-            'XMRV'
+            'TXX',
+            'TXXV'
         ];
 
         $values = [
@@ -32,8 +32,8 @@
             $_POST['ETH'],
             $_POST['LTC'],
             $_POST['DASH'],
-            $_POST['XMR'],
-            $_POST['XMRV']
+            $_POST['TXX'],
+            $_POST['TXXV']
         ];
 
         UpdateDB('wallets', $vars, $values);
@@ -163,12 +163,12 @@
                                     </div>
                                     <hr>
                                     <div class="form-group">
-                                        <label for="xmr">Monero</label>
-                                        <input type="text" id="xmr" class="form-control mr-sm-2" name="XMR" placeholder="Monero wallet address" value="<?php echo $walt_info['XMR']; ?>" required>
+                                        <label for="txx">Txchangecoin</label>
+                                        <input type="text" id="txx" class="form-control mr-sm-2" name="TXX" placeholder="Txchangecoin wallet address" value="<?php echo $walt_info['TXX']; ?>" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="xmrv">Monero PVKey</label>
-                                        <input type="text" id="xmrv" class="form-control mr-sm-2" name="XMRV" placeholder="Monero Private View Key" value="<?php echo $walt_info['XMRV']; ?>" required>
+                                        <label for="txxv">Txchangecoin PVKey</label>
+                                        <input type="text" id="txxv" class="form-control mr-sm-2" name="TXXV" placeholder="Txchangecoin Private View Key" value="<?php echo $walt_info['TXXV']; ?>" required>
                                     </div>
                                     <div class="form-group">
                                         <button class="btn btn-primary" type="submit">Update</button>

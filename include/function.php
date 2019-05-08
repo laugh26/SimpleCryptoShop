@@ -7,8 +7,8 @@
 		$wallets = DataBase('SELECT * FROM `wallets`');
 		
 		try {
-			if($crypto == "XMR") {
-				$var = file("https://xmrchain.net/myoutputs/$tx_id/".$wallets['XMR'].'/'.$wallets['XMRV']);
+			if($crypto == "TXX") {
+				$var = file("https://explorer.txchange.online/myoutputs/$tx_id/".$wallets['TXX'].'/'.$wallets['TXXV']);
 
 				for($i=160; $i != sizeof($var); $i++)
 					if(strstr($var[$i], $price))

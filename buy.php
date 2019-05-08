@@ -5,7 +5,7 @@
     include 'include/function.php';
     include 'include/captcha/captcha.php';
     
-    $cryptos = ['BTC', 'LTC', 'XMR', 'DASH', 'ETH'];
+    $cryptos = ['BTC', 'LTC', 'TXX', 'DASH', 'ETH'];
     $enemy = DataBase('SELECT COUNT(*) FROM `temp` WHERE `ip` = "'.md5($_SERVER['REMOTE_ADDR']).'"')[0];
 
     // Check if user have uncompleted order
